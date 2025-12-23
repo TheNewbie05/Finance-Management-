@@ -11,9 +11,15 @@ def initialize_data():
         df.to_csv(CSV_FILE, index=False)
 
 def load_data():
-    """Loads expenses into a Pandas DataFrame."""
+    """Loads expenses and ensures dates are datetime objects."""
     initialize_data()
-    return pd.read_csv(CSV_FILE)
+    df = pd.read_csv(CSV_FILE)
+
+    # Convert 'Date' column to datetime objects for easier filtering
+    if not df.empty:
+        df["Date"] = pd.to_datetime(df["Date"])
+
+    return df
 
 def add_expense(date, category, amount, description):
     """Adds a new row to the CSV."""
