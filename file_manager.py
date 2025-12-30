@@ -28,3 +28,7 @@ def save_expense(expense):
     # mode='a' means append (don't overwrite)
     # header=False means don't write the column names again
     new_data.to_csv(CSV_FILE, mode='a', header=False, index=False)
+
+    def overwrite_expenses(updated_df):
+    """Overwrites the CSV with the updated DataFrame."""
+    updated_df.to_csv(CSV_FILE, index=False)
