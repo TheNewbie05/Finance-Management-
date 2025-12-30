@@ -1,0 +1,16 @@
+# utils.py
+import streamlit as st
+
+def validate_data(amount, description):
+    """Ensures input is valid before saving."""
+    if amount <= 0:
+        st.error("Please enter an amount greater than 0.")
+        return False
+    if not description.strip():
+        st.warning("Please provide a description.")
+        return False
+    return True
+
+def format_currency(value):
+    """Formats a number as currency string."""
+    return f"${value:,.2f}"
