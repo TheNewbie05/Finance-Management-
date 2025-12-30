@@ -1,24 +1,30 @@
-# file_manager.py
 import pandas as pd
 import os
 
-CSV_FILE = os.path.join("data", "expenses.csv")
+CSV_FILE = "expenses.csv"
 
-def ensure_storage_exists():
-    """Creates the data folder and file if they don't exist."""
-    if not os.path.exists("data"):
-        os.makedirs("data")
+def init_file():
+    """Creates the CSV file if it doesn't exist."""
     if not os.path.exists(CSV_FILE):
         df = pd.DataFrame(columns=["Date", "Category", "Amount", "Description"])
         df.to_csv(CSV_FILE, index=False)
 
-def save_expense(expense_obj):
-    """Appends a single expense object to the CSV."""
-    ensure_storage_exists()
-    df = pd.DataFrame([expense_obj.to_list()])
-    df.to_csv(CSV_FILE, mode='a', header=False, index=False)
-
 def load_expenses():
-    """Reads all expenses from the CSV."""
-    ensure_storage_exists()
-    return pd.read_csv(CSV_FILE)
+    """Loads data from the CSV file."""
+    init_file()  # Ensure file exists first
+    try:
+        return pd.read_csv(CSV_FILE)
+    except Exception:
+        return pd.DataFrame(columns=["Date", "Category", "Amount", "Description"])
+
+def save_expense(expense):
+    """Saves a new expense to the CSV file."""
+    init_file()  # Ensure file exists first
+    
+    # Convert the expense object to a DataFrame
+    new_data = pd.DataFrame([expense.to_dict()])
+    
+    # Append it to the existing CSV file
+    # mode='a' means append (don't overwrite)
+    # header=False means don't write the column names again
+    new_data.to_csv(CSV_FILE, mode='a', header=False, index=False)
